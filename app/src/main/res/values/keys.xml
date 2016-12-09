@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="client_id">58455ec7c4978462038bb0ba</string>
+    <string name="client_secret">PTcx5b1ee3bSGga5phhfgn7cGUdMRF8nXX8oE</string>
+    <string name="app_scope">read_thermostat read_station</string>
+</resources>
