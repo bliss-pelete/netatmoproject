@@ -141,6 +141,8 @@ public class LoginActivity extends ActionBarActivity {
             focusView.requestFocus();
         }else{
             netatmoLogin();
+            Intent selectRoom = new Intent(this,SelectRoom.class);
+            startActivity(selectRoom);
         }
 
 

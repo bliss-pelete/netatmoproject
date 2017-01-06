@@ -1,10 +1,12 @@
 package weatherstation.netatmo.com.netatmo_api_android.sample;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.menu.MenuBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,8 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -110,7 +114,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         });
 
         Station station = mDevices.get(itemPosition);
-        final List<Module> modules = station.getModules();
+
+       final List<Module> modules = station.getModules();
+
         mCompletedRequest = modules.size();
 
         if(!mListItems.isEmpty()){
@@ -186,7 +192,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
      */
     private void initActionBar(){
         mAdapter = new CustomAdapter(this, mListItems);
-        ListView listView = (ListView)findViewById(R.id.list);
+        final ListView listView = (ListView)findViewById(R.id.list);
         listView.setAdapter(mAdapter);
 
 
@@ -220,6 +226,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                                             getApplicationContext(),
                                             android.R.layout.simple_spinner_dropdown_item,
                                             stationName);
+                                    int co2=0;
+                                    int temp=1;
+                                    int hum=2;
+                                    int pressure=1;
+                                    int noise=0;
 
                                     ActionBar actionBar = getSupportActionBar();
                                     actionBar.setDisplayShowTitleEnabled(false);
@@ -258,17 +269,37 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                 });
 
 
-        GraphView graph = (GraphView)findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint [] {
+        /*GraphView graph = (GraphView)findViewById(R.id.graph);
+        int co2 = Integer.parseInt(mListItems.get(0).getMeasures().getCO2());
+        int temp = Integer.parseInt(mListItems.get(0).getMeasures().getMaxTemp());
+        int hum = Integer.parseInt(mListItems.get(0).getMeasures().getHumidity());
+        int pressure= Integer.parseInt(mListItems.get(0).getMeasures().getPressure());
+        int noise = Integer.parseInt(mListItems.get(0).getMeasures().getNoise());
 
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint [] {
+
+                new DataPoint(0,co2),
+                new DataPoint(1, temp),
+                new DataPoint(2, hum),
+                new DataPoint(3, pressure),
+                new DataPoint(4, noise)
+        });*/
+
+       // graph.addSeries(series);
+        // styling
+       /* series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            @Override
+            public int get(DataPoint data) {
+                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+            }
         });
 
-        graph.addSeries(series);
+        series.setSpacing(50);
+
+// draw values on top
+        series.setDrawValuesOnTop(true);
+        series.setValuesOnTopColor(Color.RED);
+//series.setValuesOnTopSize(50);*/
     }
 
 

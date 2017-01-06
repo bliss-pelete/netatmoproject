@@ -15,12 +15,21 @@
  */
 package weatherstation.netatmo.com.netatmo_api_android.sample;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -29,6 +38,7 @@ import java.util.List;
 import weatherstation.netatmo.com.netatmo_api_android.R;
 import weatherstation.netatmo.com.netatmo_api_android.api.model.Measures;
 import weatherstation.netatmo.com.netatmo_api_android.api.model.Module;
+import weatherstation.netatmo.com.netatmo_api_android.api.model.Station;
 
 public class CustomAdapter extends BaseAdapter {
     Context mContext;
@@ -132,6 +142,54 @@ public class CustomAdapter extends BaseAdapter {
                 mNoiseView.setText("Noise (db): " + measures.getNoise());
                 mHumidityView.setText("Humidity (%): " + measures.getHumidity());
                 mTemperatureView.setText("Temp. (°C): " + measures.getTemperature());
+                //
+
+
+
+
+
+
+
+
+                                Log.i("measure","Values are");
+                                int co2 = Integer.parseInt(measures.getCO2());
+                                Log.i("co2", String.valueOf(co2));
+                               double temp=  (Double.valueOf(measures.getTemperature())) ;
+                                Log.i("temp",String.valueOf(temp));
+                                int hum = Integer.parseInt(measures.getHumidity()) ;
+                                Log.i("hum",String.valueOf(hum));
+                              double pressure = Double.valueOf(measures.getPressure());
+                               Log.i("pressure",measures.getPressure());
+                                int noise = Integer.parseInt(measures.getNoise());
+                                Log.i("noise",String.valueOf(noise));
+
+
+
+
+                View gRootView =  ((Activity)mContext).getWindow().getDecorView().findViewById(android.R.id.content);
+                Log.i("Parent is",gRootView.toString());
+                GraphView graph = (GraphView)gRootView.findViewById(R.id.graph);
+                BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint [] {
+
+                        new DataPoint(0,co2),
+                        new DataPoint(1, temp),
+                        new DataPoint(2, hum),
+                     new DataPoint(3, pressure),
+                        new DataPoint(4, noise)
+                });
+                graph.addSeries(series);
+                series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                    @Override
+                    public int get(DataPoint data) {
+                        return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                    }
+                });
+
+                series.setSpacing(50);
+
+// draw values on top
+                series.setDrawValuesOnTop(true);
+                series.setValuesOnTopColor(Color.RED);
                 break;
             case Module.TYPE_OUTDOOR:
                 mCO2View.setVisibility(View.GONE);
